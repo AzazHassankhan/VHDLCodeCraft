@@ -1,1 +1,1 @@
-
+16 bit variable bits rotator
