@@ -1,0 +1,90 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 04/21/2022 01:44:53 PM
+-- Design Name: 
+-- Module Name: MUX0 - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity MUX0 is
+    Port ( A : in STD_LOGIC_VECTOR (15 downto 0);
+           B0 : in STD_LOGIC;
+           B1 : in STD_LOGIC;
+           B2 : in STD_LOGIC;
+           B3 : in STD_LOGIC;
+           C : out STD_LOGIC_VECTOR (15 downto 0));
+end MUX0;
+
+architecture Behavioral of MUX0 is
+signal al0: STD_LOGIC_VECTOR (15 downto 0);
+signal ar0: STD_LOGIC_VECTOR (15 downto 0);
+signal temp0: STD_LOGIC_VECTOR (15 downto 0);
+--Mux 1
+signal al1: STD_LOGIC_VECTOR (15 downto 0);
+signal ar1: STD_LOGIC_VECTOR (15 downto 0);
+signal temp1: STD_LOGIC_VECTOR (15 downto 0);
+-- Mux 2
+signal al2: STD_LOGIC_VECTOR (15 downto 0);
+signal ar2: STD_LOGIC_VECTOR (15 downto 0);
+signal temp2: STD_LOGIC_VECTOR (15 downto 0);
+-- Mux 3
+signal al3: STD_LOGIC_VECTOR (15 downto 0);
+signal ar3: STD_LOGIC_VECTOR (15 downto 0);
+signal temp3: STD_LOGIC_VECTOR (15 downto 0);
+begin
+-- Mux0
+al0 <= A ;
+ar0 <= A(14 downto 0) & A(15);
+
+with B0 select
+    temp0 <= al0 when '0',
+    ar0 when '1',
+    "0000000000000000" when others ;
+-- Connecting Mux1 to Mux0
+al1 <= temp0 ;
+ar1 <= temp0(13 downto 0) & temp0(15 downto 14);
+with B1 select
+    temp1 <= al1 when '0',
+    ar1 when '1',
+    "0000000000000000" when others ;
+-- Connecting Mux2 to Mux1
+al2 <= temp1 ;
+ar2 <= temp1(11 downto 0) & temp1(15 downto 12);
+with B2 select
+    temp2 <= al2 when '0',
+    ar2 when '1',
+    "0000000000000000" when others ;
+-- Connecting Mux2 to Mux3
+al3 <= temp2 ;
+ar3 <= temp2(7 downto 0) & temp2(15 downto 8);
+with B3 select
+    temp3 <= al3 when '0',
+    ar3 when '1',
+    "0000000000000000" when others ;
+C<=temp3;
+end Behavioral;

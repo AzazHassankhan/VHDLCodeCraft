@@ -1,0 +1,74 @@
+-- Testbench created online at:
+--   https://www.doulos.com/knowhow/perl/vhdl-testbench-creation-using-perl/
+-- Copyright Doulos Ltd
+
+library IEEE;
+use IEEE.Std_logic_1164.all;
+use IEEE.Numeric_Std.all;
+
+entity MUX0_tb is
+end;
+
+architecture bench of MUX0_tb is
+
+  component MUX0
+      Port ( A : in STD_LOGIC_VECTOR (15 downto 0);
+             B0 : in STD_LOGIC;
+             B1 : in STD_LOGIC;
+             B2 : in STD_LOGIC;
+             B3 : in STD_LOGIC;
+             C : out STD_LOGIC_VECTOR (15 downto 0));
+  end component;
+
+  signal A: STD_LOGIC_VECTOR (15 downto 0);
+  signal B0: STD_LOGIC;
+  signal B1: STD_LOGIC;
+  signal B2: STD_LOGIC;
+  signal B3: STD_LOGIC;
+  signal C: STD_LOGIC_VECTOR (15 downto 0);
+
+begin
+
+  uut: MUX0 port map ( A  => A,
+                       B0 => B0,
+                       B1 => B1,
+                       B2 => B2,
+                       B3 => B3,
+                       C  => C );
+
+  stimulus: process
+  begin
+  wait for 10 ns;                         -- Rotation of 1 bit
+    -- Put initialisation code here
+    A<="1000000000000001";          
+    B0<='1';
+    B1<='0';
+    B2<='0';
+    B3<='0';
+  wait for 10 ns;                        -- Rotation of 2 bit
+     B0<='0';
+     B1<='1';
+     B2<='0';
+     B3<='0';
+  wait for 10 ns;                       -- Rotation of 4 bit
+          B0<='0'; 
+          B1<='0';
+          B2<='1';
+          B3<='0';
+  wait for 10 ns;                         -- Rotation of 8 bit
+                    B0<='0';
+                    B1<='0';
+                    B2<='0';
+                    B3<='1';
+  wait for 10 ns;                        -- Rotation of 9 bit        
+                                      B0<='1';
+                                      B1<='0';
+                                      B2<='0';
+                                      B3<='1';
+    -- Put test bench stimulus code here
+
+    wait;
+  end process;
+
+
+end;
