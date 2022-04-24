@@ -1,0 +1,47 @@
+library IEEE;
+use IEEE.Std_logic_1164.all;
+use IEEE.Numeric_Std.all;
+
+entity Multiplication_tb is
+end;
+
+architecture bench of Multiplication_tb is
+
+  component Multiplication
+      Port ( Input1 : in STD_LOGIC_VECTOR (7 downto 0);
+             Input2 : in STD_LOGIC_VECTOR (7 downto 0);
+             UnSigned_mul : out STD_LOGIC_VECTOR (15 downto 0);
+             Signed_mul : out STD_LOGIC_VECTOR (15 downto 0));
+  end component;
+
+  signal Input1: STD_LOGIC_VECTOR (7 downto 0);
+  signal Input2: STD_LOGIC_VECTOR (7 downto 0);
+  signal UnSigned_mul: STD_LOGIC_VECTOR (15 downto 0);
+  signal Signed_mul: STD_LOGIC_VECTOR (15 downto 0);
+
+begin
+
+  uut: Multiplication port map ( Input1       => Input1,
+                                 Input2       => Input2,
+                                 UnSigned_mul => UnSigned_mul,
+                                 Signed_mul   => Signed_mul );
+
+  stimulus: process
+  begin
+  wait for 10 ns;
+  input1<="00000000";
+  input2<="00000000";
+  wait for 10 ns;
+  input1<="11111111";
+    input2<="11111111";
+
+    -- Put initialisation code here
+
+
+    -- Put test bench stimulus code here
+
+    wait;
+  end process;
+
+
+end;
