@@ -1,0 +1,48 @@
+library IEEE;
+use IEEE.Std_logic_1164.all;
+use IEEE.Numeric_Std.all;
+
+entity D_Latch_tb is
+end;
+
+architecture bench of D_Latch_tb is
+
+  component D_Latch
+      Port ( D : in STD_LOGIC;
+             Clock : in STD_LOGIC;
+             Q : out STD_LOGIC);
+  end component;
+
+  signal D: STD_LOGIC;
+  signal Clock: STD_LOGIC;
+  signal Q: STD_LOGIC;
+
+begin
+
+  uut: D_Latch port map ( D     => D,
+                          Clock => Clock,
+                          Q     => Q );
+
+  stimulus: process
+  begin
+  
+    -- Put initialisation code here
+wait for 10 ns;
+Clock<='1';
+D<='1';
+wait for 10 ns;
+D<='0';
+wait for 10 ns;
+Clock<='0';
+wait for 10 ns;
+Clock<='1';
+D<='0';
+
+
+    -- Put test bench stimulus code here
+
+    wait;
+  end process;
+
+
+end;
