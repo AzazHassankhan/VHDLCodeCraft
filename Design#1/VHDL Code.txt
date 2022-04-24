@@ -1,0 +1,77 @@
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity Design is
+    Port ( t3  out STD_LOGIC;
+           t2  out STD_LOGIC;
+           t1  out STD_LOGIC;
+           t0  out STD_LOGIC;
+           Clock  in STD_LOGIC;
+           r0  in STD_LOGIC;
+           enable  in STD_LOGIC;
+           r1  in STD_LOGIC;
+           r2  in STD_LOGIC;
+           r3  in STD_LOGIC;
+           r4  in STD_LOGIC;
+           r5  in STD_LOGIC;
+           s0  in STD_LOGIC;
+           s1  in STD_LOGIC);
+end Design;
+
+architecture behavioural of Design is
+signal p0,p3,q1,q0,ena  std_logic;
+signal z3,z2,z1,z0  std_logic;
+component MUX is
+    Port ( R0  in STD_LOGIC;
+           R1  in STD_LOGIC;
+           S  in STD_LOGIC;
+           P  out STD_LOGIC);
+end component;
+component Priority_encoder is
+    Port ( w0  in STD_LOGIC;
+           w1  in STD_LOGIC;
+           w2  in STD_LOGIC;
+           w3  in STD_LOGIC;
+           y0  out STD_LOGIC;
+           y1  out STD_LOGIC;
+           z  out STD_LOGIC);
+end component;
+component Decoder is
+    Port ( w1  in STD_LOGIC;
+           w0  in STD_LOGIC;
+           en  in STD_LOGIC;
+           y0  out STD_LOGIC;
+           y1  out STD_LOGIC;
+           y2  out STD_LOGIC;
+           y3  out STD_LOGIC);
+end component;
+component Parallel_register is
+    Port ( 
+           z0  in STD_LOGIC;
+           z1  in STD_LOGIC;
+           z2  in STD_LOGIC;
+           z3  in STD_LOGIC;
+           Enable  in STD_LOGIC;
+           Clock  in STD_LOGIC;
+           t0  out std_logic;
+           t1  out std_logic;
+           t2  out std_logic;
+           t3  out std_logic
+          );
+end component;
+begin
+
+u1  MUX 
+port map(r0=r0,r1=r1,S=s0,P=p0);
+u2  MUX 
+port map(r0=r4,r1=r5,S=s1,P=p3);
+u3  Priority_encoder 
+port map(w0=p0,w1=r2,w2=r3,w3=p3,y1=q1,y0=q0,z=ena);
+u4  Decoder 
+port map(w1=q1,w0=q0,en=ena,y3=z3,y2=z2,y1=z1,y0=z0);
+u5  Parallel_register 
+port map(z3=z3,z2=z2,z1=z1,z0=z0,Clock=Clock,t3=t3,t2=t2,t1=t1,t0=t0,enable=enable);
+END behavioural;
