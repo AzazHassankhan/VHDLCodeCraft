@@ -1,0 +1,39 @@
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity Parallel_register is
+    Port ( 
+           z0 : in STD_LOGIC;
+           z1 : in STD_LOGIC;
+           z2 : in STD_LOGIC;
+           z3 : in STD_LOGIC;
+           Enable : in STD_LOGIC;
+           Clock : in STD_LOGIC;
+           t0 : out std_logic;
+           t1 : out std_logic;
+           t2 : out std_logic;
+           t3 : out std_logic
+          );
+end Parallel_register;
+
+architecture Behavioral of Parallel_register is
+signal D : STD_LOGIC_VECTOR (3 downto 0);
+signal Qt: STD_LOGIC_VECTOR (3 downto 0);
+begin
+process(Clock)
+begin
+D<= z3 & z2 & z1 & z0;
+if rising_edge(Clock) then
+    if Enable='1' then
+            Qt<=D;
+        end if;
+     end if;
+
+end process;
+t3<=Qt(3);
+t2<=Qt(2);
+t1<=Qt(1);
+t0<=Qt(0);
+end Behavioral;

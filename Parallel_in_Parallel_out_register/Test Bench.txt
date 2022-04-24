@@ -1,0 +1,80 @@
+library IEEE;
+use IEEE.Std_logic_1164.all;
+use IEEE.Numeric_Std.all;
+
+entity Parallel_register_tb is
+end;
+
+architecture bench of Parallel_register_tb is
+
+  component Parallel_register
+      Port ( 
+             z0 : in STD_LOGIC;
+             z1 : in STD_LOGIC;
+             z2 : in STD_LOGIC;
+             z3 : in STD_LOGIC;
+             Enable : in STD_LOGIC;
+             Clock : in STD_LOGIC;
+             t0 : out std_logic;
+             t1 : out std_logic;
+             t2 : out std_logic;
+             t3 : out std_logic
+            );
+  end component;
+
+  signal z0: STD_LOGIC;
+  signal z1: STD_LOGIC;
+  signal z2: STD_LOGIC;
+  signal z3: STD_LOGIC;
+  signal Enable: STD_LOGIC;
+  signal Clock: STD_LOGIC;
+  signal t0: std_logic;
+  signal t1: std_logic;
+  signal t2: std_logic;
+  signal t3: std_logic ;
+
+  constant clock_period: time := 10 ns;
+  signal stop_the_clock: boolean;
+
+begin
+
+  uut: Parallel_register port map ( z0     => z0,
+                                    z1     => z1,
+                                    z2     => z2,
+                                    z3     => z3,
+                                    Enable => Enable,
+                                    Clock  => Clock,
+                                    t0     => t0,
+                                    t1     => t1,
+                                    t2     => t2,
+                                    t3     => t3 );
+
+  stimulus: process
+  begin
+  
+    -- Put initialisation code here
+   enable<='1';
+   z3<='1';
+   z2<='1';
+   z1<='0';
+   z0<='1';
+   wait for 10 ns;
+    z3<='0';
+    z2<='0';
+    z1<='0';
+    z0<='0';
+    -- Put test bench stimulus code here
+
+    wait;
+  end process;
+
+  clocking: process
+  begin
+    while not stop_the_clock loop
+      Clock <= '0', '1' after clock_period / 2;
+      wait for clock_period;
+    end loop;
+    wait;
+  end process;
+
+end;
