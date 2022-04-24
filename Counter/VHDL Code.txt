@@ -1,0 +1,29 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.ALL;
+
+entity Counter is
+    Port ( Clear : in STD_LOGIC;
+           Clock : in STD_LOGIC;
+           Q : out STD_LOGIC_VECTOR (2 downto 0));
+end Counter;
+
+architecture Behavioral of Counter is
+Signal Count: unsigned(2 downto 0);
+
+begin
+process(Clock)
+begin
+
+if rising_edge(Clock) then
+    if Clear='1' then
+        Count<=(others=>'0');
+    else 
+        Count<=Count+1;
+end if;
+
+end if;
+end process;
+
+Q<=std_logic_vector(Count);
+end Behavioral;
