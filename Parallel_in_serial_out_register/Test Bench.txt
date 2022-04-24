@@ -1,0 +1,66 @@
+library IEEE;
+use IEEE.Std_logic_1164.all;
+use IEEE.Numeric_Std.all;
+
+entity Parallel_register_tb is
+end;
+
+architecture bench of Parallel_register_tb is
+
+  component Parallel_register
+      Port ( 
+             Load : in STD_LOGIC;
+             Enable : in STD_LOGIC;
+             Sin : in STD_LOGIC;
+             Clock : in STD_LOGIC;
+             Q : out STD_LOGIC_VECTOR (3 downto 0);
+             D : in STD_LOGIC_VECTOR (3 downto 0));
+  end component;
+
+  signal Load: STD_LOGIC;
+  signal Enable: STD_LOGIC;
+  signal Sin: STD_LOGIC;
+  signal Clock: STD_LOGIC;
+  signal Q: STD_LOGIC_VECTOR (3 downto 0);
+  signal D: STD_LOGIC_VECTOR (3 downto 0);
+
+  constant clock_period: time := 10 ns;
+  signal stop_the_clock: boolean;
+
+begin
+
+  uut: Parallel_register port map ( Load   => Load,
+                                    Enable => Enable,
+                                    Sin    => Sin,
+                                    Clock  => Clock,
+                                    Q      => Q,
+                                    D      => D );
+
+  stimulus: process
+  begin
+  
+    -- Put initialisation code here
+    D<="1101";
+    enable<='1';
+    load<='1';
+    wait for 10 ns;
+    load<='0';
+    Sin<='1';
+    wait for 10 ns;
+    Sin<='0';
+  wait;
+    -- Put test bench stimulus code here
+
+    
+  end process;
+
+  clocking: process
+  begin
+    while not stop_the_clock loop
+      Clock <= '0', '1' after clock_period / 2;
+      wait for clock_period;
+    end loop;
+    wait;
+  end process;
+
+end;
