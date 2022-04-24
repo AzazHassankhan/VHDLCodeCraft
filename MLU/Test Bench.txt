@@ -1,0 +1,55 @@
+library IEEE;
+use IEEE.Std_logic_1164.all;
+use IEEE.Numeric_Std.all;
+
+entity MLU_tb is
+end;
+
+architecture bench of MLU_tb is
+
+  component MLU
+      Port ( A : in STD_LOGIC;
+             B : in STD_LOGIC;
+             NEG_A : in STD_LOGIC;
+             NEG_B : in STD_LOGIC;
+             NEG_Y : in STD_LOGIC;
+             L1 : in STD_LOGIC;
+             L0 : in STD_LOGIC;
+             Y : OUT STD_LOGIC);
+  end component;
+
+  signal A: STD_LOGIC;
+  signal B: STD_LOGIC;
+  signal NEG_A: STD_LOGIC;
+  signal NEG_B: STD_LOGIC;
+  signal NEG_Y: STD_LOGIC;
+  signal L1: STD_LOGIC;
+  signal L0: STD_LOGIC;
+  signal Y: STD_LOGIC;
+
+begin
+
+  uut: MLU port map ( A     => A,
+                      B     => B,
+                      NEG_A => NEG_A,
+                      NEG_B => NEG_B,
+                      NEG_Y => NEG_Y,
+                      L1    => L1,
+                      L0    => L0,
+                      Y     => Y );
+
+  stimulus: process
+  begin
+------------------------------
+  A<='0';
+  B<='0';
+  NEG_A <='0';
+  NEG_B <='0';
+  NEG_Y <='0';
+------------------------------
+
+    wait;
+  end process;
+
+
+end;

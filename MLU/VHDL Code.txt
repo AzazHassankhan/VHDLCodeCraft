@@ -1,0 +1,70 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 04/22/2022 10:50:40 PM
+-- Design Name: 
+-- Module Name: MLU - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity MLU is
+    Port ( A : in STD_LOGIC;
+           B : in STD_LOGIC;
+           NEG_A : in STD_LOGIC;
+           NEG_B : in STD_LOGIC;
+           NEG_Y : in STD_LOGIC;
+           L1 : in STD_LOGIC;
+           L0 : in STD_LOGIC;
+           Y : OUT STD_LOGIC);
+end MLU;
+
+architecture Behavioral of MLU is
+signal A1,B1:Std_logic;
+signal MUX0,MUX1,MUX2,MUX3: Std_logic;
+signal Y1: Std_logic;
+signal L: Std_logic_VECTOR(1 DOWNTO 0);
+
+begin
+---------------------------------
+A1<=A when NEG_A='0' else not A;
+B1<=B when NEG_B='0' else not B;
+---------------------------------------
+MUX0<=A1 AND B1 ;
+MUX1<=A1 OR B1 ;
+MUX2<=A1 XOR B1 ;
+MUX3<=A1 XNOR B1 ;
+---------------------------------------
+L<=L1 & L0;
+WITH L SELECT
+    Y1<=MUX0 WHEN "00",
+    MUX1 WHEN "01",
+    MUX2 WHEN "10",
+    MUX3 WHEN OTHERS;
+ ----------------------------------------
+  Y<=Y1 WHEN NEG_Y='0' ELSE NOT Y1;
+
+end Behavioral;
