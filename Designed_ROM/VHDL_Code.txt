@@ -1,0 +1,49 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 04/22/2022 10:16:58 PM
+-- Design Name: 
+-- Module Name: ROM - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.ALL;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity ROM is
+    Port ( addr : in STD_LOGIC_VECTOR (1 downto 0);
+           Cout : out STD_LOGIC_VECTOR (15 downto 0));
+end ROM;
+
+architecture Behavioral of ROM is
+type vector is Array(0 to 3) of Std_logic_vector(15 downto 0);
+Constant memory: vector:=
+                (X"800A",
+                 X"D450",
+                 X"1111",
+                 X"0000");
+begin
+Cout<=memory(to_integer(unsigned(addr)));
+
+end Behavioral;
