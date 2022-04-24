@@ -1,0 +1,60 @@
+library IEEE;
+use IEEE.Std_logic_1164.all;
+use IEEE.Numeric_Std.all;
+
+entity Priority_encoder_tb is
+end;
+
+architecture bench of Priority_encoder_tb is
+
+  component Priority_encoder
+      Port ( w0 : in STD_LOGIC;
+             w1 : in STD_LOGIC;
+             w2 : in STD_LOGIC;
+             w3 : in STD_LOGIC;
+             y0 : out STD_LOGIC;
+             y1 : out STD_LOGIC;
+             z : out STD_LOGIC);
+  end component;
+
+  signal w0: STD_LOGIC;
+  signal w1: STD_LOGIC;
+  signal w2: STD_LOGIC;
+  signal w3: STD_LOGIC;
+  signal y0: STD_LOGIC;
+  signal y1: STD_LOGIC;
+  signal z: STD_LOGIC;
+
+begin
+
+  uut: Priority_encoder port map ( w0 => w0,
+                                   w1 => w1,
+                                   w2 => w2,
+                                   w3 => w3,
+                                   y0 => y0,
+                                   y1 => y1,
+                                   z  => z );
+
+  stimulus: process
+  begin
+  
+    -- Put initialisation code here
+    
+       w0<='1';
+       wait for 10 ns;
+       w0<='0';
+       w1<='1';
+       wait for 10 ns;
+       w1<='0';
+       w2<='1';
+       wait for 10 ns;
+       w2<='0';
+       w3<='1';
+
+    -- Put test bench stimulus code here
+
+    wait;
+  end process;
+
+
+end;
