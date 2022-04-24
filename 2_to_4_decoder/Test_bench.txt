@@ -1,0 +1,63 @@
+library IEEE;
+use IEEE.Std_logic_1164.all;
+use IEEE.Numeric_Std.all;
+
+entity Decoder_tb is
+end;
+
+architecture bench of Decoder_tb is
+
+  component Decoder
+      Port ( w1 : in STD_LOGIC;
+             w0 : in STD_LOGIC;
+             en : in STD_LOGIC;
+             y0 : out STD_LOGIC;
+             y1 : out STD_LOGIC;
+             y2 : out STD_LOGIC;
+             y3 : out STD_LOGIC);
+  end component;
+
+  signal w1: STD_LOGIC;
+  signal w0: STD_LOGIC;
+  signal en: STD_LOGIC;
+  signal y0: STD_LOGIC;
+  signal y1: STD_LOGIC;
+  signal y2: STD_LOGIC;
+  signal y3: STD_LOGIC;
+
+begin
+
+  uut: Decoder port map ( w1 => w1,
+                          w0 => w0,
+                          en => en,
+                          y0 => y0,
+                          y1 => y1,
+                          y2 => y2,
+                          y3 => y3 );
+
+  stimulus: process
+  begin
+  
+    -- Put initialisation code here
+    en<='1';
+    w0<='0';
+    w1<='0';
+    wait for 10 ns;
+    en<='1';
+    w0<='1';
+    w1<='0';
+    wait for 10 ns;
+    en<='1';
+    w0<='0';
+    w1<='1';
+    wait for 10 ns;
+    en<='1';
+    w0<='1';
+    w1<='1';
+    -- Put test bench stimulus code here
+
+    wait;
+  end process;
+
+
+end;

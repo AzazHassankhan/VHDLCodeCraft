@@ -1,0 +1,30 @@
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity Decoder is
+    Port ( w1 : in STD_LOGIC;
+           w0 : in STD_LOGIC;
+           en : in STD_LOGIC;
+           y0 : out STD_LOGIC;
+           y1 : out STD_LOGIC;
+           y2 : out STD_LOGIC;
+           y3 : out STD_LOGIC);
+end Decoder;
+
+architecture Behavioral of Decoder is
+signal y : STD_LOGIC_vector(3 downto 0);
+signal w : STD_LOGIC_vector(2 downto 0);
+begin
+w<=en & w1 & w0;
+with w select
+    y<="0001" when "100",
+       "0010" when "101",
+       "0100" when "110",
+       "1000"  when "111",
+       "0000" when others;
+y0<=y(0);
+y1<=y(1);
+y2<=y(2);
+y3<=y(3);
+end Behavioral;
