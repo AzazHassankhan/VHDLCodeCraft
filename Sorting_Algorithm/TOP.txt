@@ -1,0 +1,94 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+-- top
+entity top is
+	generic (N : integer := 4 ; L : integer := 4);
+	port ( 	  
+		clk : in std_logic;
+		rst : in std_logic;
+		s : in std_logic;
+		Rd : in std_logic;
+		WrInit : in std_logic;
+		RAddr : in std_logic_vector(L-1 downto 0);
+		DataIn : in std_logic_vector(N-1 downto 0);
+		
+		DataOut : out std_logic_vector(N-1 downto 0);
+		Done : out std_logic
+        );
+end top;
+
+architecture arch of top is
+   -- Controller out
+   signal Wr : std_logic;
+   signal Li : std_logic;
+   signal Lj : std_logic;
+   signal Ei : std_logic;
+   signal Ej : std_logic;
+   signal EA : std_logic;
+   signal EB : std_logic;
+   signal Bout : std_logic;
+   signal Csel : std_logic;
+   
+   -- Controller In
+   signal zi : std_logic;
+   signal zj : std_logic;
+   signal AgtB : std_logic;
+   
+begin
+
+	-- datapath	
+	datapath_inst: entity work.datapath 
+    generic map ( N => 4)
+    port map
+    ( 	 
+        clk => clk, 
+        rst => rst, 
+        DataIn => DataIn,
+		RAdd => RAddr,
+		WrInit => WrInit,
+		Rd => Rd,
+		DataOut => DataOut,
+		
+		s=>s,
+		Wr => Wr, 
+        Li => Li, 
+        Lj => Lj, 
+        Ei => Ei, 
+        Ej => Ej, 
+        EA => EA,
+        EB => EB,
+        Bout => Bout,
+        Csel => Csel,
+		
+		zi  =>  zi, 
+		zj  =>  zj,
+        AgtB => AgtB
+);
+	-- controller
+	controller_inst: entity work.controller 
+	port map
+	( 	  
+		clk => clk, 
+		rst => rst,
+		
+		Wr => Wr, 
+        Li => Li, 
+        Lj => Lj, 
+        Ei => Ei, 
+        Ej => Ej, 
+        EA => EA,
+        EB => EB,
+        Bout => Bout,
+        Csel => Csel,
+        
+		s 	=> s,
+        zi  =>  zi, 
+        zj  =>  zj,
+        AgtB => AgtB,
+		Done => Done
+);
+	
+end arch;
+
+

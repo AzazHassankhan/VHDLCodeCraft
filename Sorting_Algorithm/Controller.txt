@@ -1,0 +1,121 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+-- controller
+entity controller is
+	port ( 	  
+		-- Input
+		clk : in std_logic;
+		rst : in std_logic;
+	    AgtB  : in std_logic; 
+	    zi  : in std_logic; 
+	    zj  : in std_logic; 
+	    s  : in std_logic; 
+	    
+		-- Output
+	    Wr : out std_logic; 
+	    Li : out std_logic;
+	    Lj : out std_logic;
+	    Ei : out std_logic;
+	    Ej : out std_logic;
+		EA : out std_logic;
+		EB : out std_logic;
+		Bout : out std_logic;
+		Csel : out std_logic;
+		Done : out std_logic
+		);
+end controller;
+
+architecture arch of controller is
+
+	type y is ( S_0, S_1, S_2, S_3, S_4, S_5, S_6, S_7);     
+	signal state : y;  
+	
+begin
+
+	-- ===========================
+	-- state machine: controller 
+	-- ===========================
+	process(clk)
+	begin
+		if (rising_edge (clk)) then
+			if(rst = '1') then		-- Synchronous reset (active low)
+				state <= S_0;
+			else
+				case (state) is
+					when S_0 => 
+						if (s = '1') then
+							state <= S_1;
+						else
+							state <= S_0;
+						end if;
+						
+					when S_1 => 
+						 state <= S_2;
+						 
+					when S_2 => 
+						 state <= S_3;	
+						 
+					when S_3 => 
+						if (AgtB = '1') then
+							state <= S_4;
+						else
+							if (zj = '1') then
+								if (zi = '1') then
+									state <= S_7;
+								else
+									state <= S_1;
+							    end if;
+							else
+								state <= S_2;
+							end if;
+						end if;	 
+					
+					when S_4 => 
+						 state <= S_5;					
+					
+					when S_5 => 
+						 state <= S_6;
+
+					when S_6 => 
+						if (zj = '1') then
+							if (zi = '1') then
+								state <= S_7;
+							else
+								state <= S_1;
+							end if;
+						else
+							state <= S_2;
+						end if;
+							
+					when S_7 => 
+						if (s='1') then
+						   state <= S_7;
+						else
+						   state <= S_0;
+						end if;
+						 			
+					when others =>
+						state <= S_0;
+						
+				end case;
+			end if;  
+		end if;
+    end process;
+	
+	-- control signals 
+    Csel <= '1' when (state = S_2 or state = S_5) else '0';    
+	
+    Li <= '1' when (state = S_0) else '0';	 
+    Ei <= '1' when (state = S_3 and AgtB = '0' and zj = '1' and zi = '0') or (state = S_6 and zj = '1' and zi = '0') else '0';    
+	
+    Lj <= '1' when (state = S_1) else '0';     
+    Ej <= '1' when (state = S_3 and AgtB = '0' and zj = '0') or (state = S_6 and zj = '0')else '0';    
+	
+    EA <= '1' when (state = S_1 or state = S_6) else '0';     
+    EB  <= '1' when (state = S_2) else '0';    
+    Bout <= '1' when (state = S_4) else '0';
+    Wr  <= '1' when (state = S_4 or state = S_5) else '0';
+    done <= '1' when (state = S_7) else '0';
+
+end arch;
